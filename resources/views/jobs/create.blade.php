@@ -8,14 +8,12 @@
         <form method="POST" action="/jobs">
             @csrf
 
-            <!-- Section: 1. Job Basics & Compensation -->
             <div class="border-b border-gray-200 pb-8 mb-8">
                 <h2 class="text-xl font-bold text-gray-900">1. Job Basics & Compensation</h2>
                 <p class="mt-1 text-sm text-gray-500 mb-6">Enter the title and compensation for the role.</p>
 
                 <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                     
-                    <!-- Job Title -->
                     <div>
                         <label for="title" class="block text-sm font-semibold text-gray-700">Job Title</label>
                         <input id="title" name="title" type="text" required
@@ -28,7 +26,6 @@
                         @enderror
                     </div>
 
-                    <!-- Salary -->
                     <div>
                         <label for="salary" class="block text-sm font-semibold text-gray-700">Salary (Annual/Range)</label>
                         <input id="salary" name="salary" type="text" required
@@ -43,21 +40,19 @@
                 </div>
             </div>
 
-            <!-- Section: 2. Employer & Tags (Selects) -->
             <div class="border-b border-gray-200 pb-8 mb-8">
                 <h2 class="text-xl font-bold text-gray-900">2. Categorization & Employer</h2>
                 <p class="mt-1 text-sm text-gray-500 mb-6">Select the employer and relevant technologies/skills.</p>
 
                 <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
 
-                    <!-- SELECT: Employer (Company) -->
                     <div>
                         <label for="employer_id" class="block text-sm font-semibold text-gray-700">Select Employer</label>
                         <select id="employer_id" name="employer_id" required
                                 class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-3 transition duration-150"
                         >
                             <option value="">-- Choose Company --</option>
-                            {{-- Loop through the collection of companies passed from the controller --}}
+                            {{-- Use old() directly in the selected condition --}}
                             @foreach ($employers as $employer)
                                 <option 
                                     value="{{ $employer->id }}"
@@ -72,13 +67,12 @@
                         @enderror
                     </div>
                     
-                    <!-- SELECT: Tags (Multi-Select) -->
                     <div>
                         <label for="tags" class="block text-sm font-semibold text-gray-700">Relevant Tags (Hold Ctrl to select multiple)</label>
                         <select id="tags" name="tags[]" multiple required
                                 class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-3 transition duration-150 h-32"
                         >
-                            {{-- Get old selected tags array, defaulting to an empty array --}}
+                            {{-- CHANGE: Use the old('tags', []) helper directly and simplify the loop --}}
                             @php $oldTags = old('tags', []); @endphp 
 
                             {{-- Loop through the collection of available tags --}}
@@ -99,7 +93,6 @@
                 </div>
             </div>
 
-            <!-- Section: 3. Role Description (REQUIRED by database) -->
             <div class="pb-6">
                 <h2 class="text-xl font-bold text-gray-900">3. Role Description</h2>
                 <p class="mt-1 text-sm text-gray-500 mb-6">Write a detailed description of the responsibilities.</p>
@@ -107,8 +100,8 @@
                 <div>
                     <label for="description" class="sr-only">Job Description</label>
                     <textarea id="description" name="description" rows="8" required
-                              class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-3 transition duration-150"
-                              placeholder="Describe the responsibilities, required skills, and benefits here..."
+                                 class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-3 transition duration-150"
+                                 placeholder="Describe the responsibilities, required skills, and benefits here..."
                     >{{ old('description') }}</textarea>
                     @error('description')
                         <p class="text-xs text-red-500 mt-1.5">{{ $message }}</p>
@@ -116,15 +109,12 @@
                 </div>
             </div>
 
-            <!-- Action Buttons -->
             <div class="pt-8 mt-6 flex justify-end space-x-4 border-t border-gray-200">
                 
-                <!-- Cancel Button -->
                 <a href="/jobs" class="px-6 py-3 text-base font-semibold text-gray-700 bg-gray-50 border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 transition duration-150">
                     Cancel
                 </a>
                 
-                <!-- Submit Button -->
                 <button type="submit"
                         class="px-6 py-3 text-base font-semibold text-white bg-indigo-600 border border-transparent rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-150">
                     Publish Job
